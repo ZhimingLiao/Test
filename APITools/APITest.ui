@@ -133,7 +133,7 @@
     <enum>Qt::RichText</enum>
    </property>
    <property name="pixmap">
-    <pixmap>hq-logo.png</pixmap>
+    <pixmap>D:/PycharmProjects/Test/APITools/hq-logo.png</pixmap>
    </property>
   </widget>
   <widget class="QWidget" name="layoutWidget">
