@@ -45,3 +45,5 @@ if __name__ == '__main__':
     # print(sorted(temp.keys(), reverse=True))
     # print(temp)
     # print(list(temp))
+    # Json
+    # 模块提供了四个方法： dumps、dump、loads、load
