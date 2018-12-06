@@ -58,30 +58,6 @@ pivot(max(p_name) for room_name in ("1号诊室", "2号诊室", "3号诊室", "4
 group by queue_sn,b.[1号诊室],b.[2号诊室], b.[3号诊室], b.[4号诊室], b.[5号诊室], b.[抢救室]
 order by queue_sn asc
 
-
---declare @i int = 0, @temp varchar(10)
---while @i < 6
---	begin
---		set @temp = (select top 1 "4号诊室" from #wait_list where "4号诊室" is not null)
---		select (@temp)
---		set @i = @i + 1
---	end
---select * from #wait_list
-
---create table tempData(
---id int identity(1,1),
---name varchar(20)
---)
---drop table tempData
---select * from tempData
-
---insert into tempData
---select [4号诊室]
---from #wait_list
---where [4号诊室] is not null
---order by [4号诊室]
-
-
 declare @i int = 1
 DECLARE @sql VARCHAR(MAX)=''
 
@@ -134,21 +110,6 @@ from #wait_list
 where [抢救室] is not null
 --order by [抢救室] desc
 
-
-
-
---select a.[1号诊室], a.[2号诊室], a.[3号诊室], a.[4号诊室], a.[5号诊室], a.[抢救室],
-	--CONVERT(varchar(100), GETDATE(), 23) NowDate,  CONVERT(varchar(100), GETDATE(), 24) NowTime,@timeout [TimeOut],
-	--			(case when datename(weekday, getdate())='星期一' then '周一'
-	--			when datename(weekday, getdate())='星期二' then '周二'
-	--			when datename(weekday, getdate())='星期三' then '周三'
-	--			when datename(weekday, getdate())='星期四' then '周四'
-	--			when datename(weekday, getdate())='星期五' then '周五'
-	--			when datename(weekday, getdate())='星期六' then '周六'
-	--			when datename(weekday, getdate())='星期日' then '周日'
-	--			end) NowWeek
---from #wait_list a
-
 select a.name [1号诊室], b.name [2号诊室], c.name [3号诊室], d.name [4号诊室], e.name [5号诊室], f.name [抢救室],
 CONVERT(varchar(100), GETDATE(), 23) NowDate,  CONVERT(varchar(100), GETDATE(), 24) NowTime,@timeout [TimeOut],
 				(case when datename(weekday, getdate())='星期一' then '周一'
@@ -161,11 +122,13 @@ CONVERT(varchar(100), GETDATE(), 23) NowDate,  CONVERT(varchar(100), GETDATE(), 
 				end) NowWeek
 from tempData1 a
 full join tempData2  b on a.id = b.id
-full join tempData3  c on b.id = c.id
-full join tempData4  d on c.id = d.id
-full join tempData5  e on d.id = e.id
-full join tempData6  f on e.id = f.id
+full join tempData3  c on (case when isnull(b.id,'')='' then a.id  else b.id end)=c.id --a.id = c.id
+full join tempData4  d on(case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id else a.id end) = d.id
+full join tempData5  e on (case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id  when ISNULL(d.id, '')<> '' then d.id else a.id end) = e.id
+full join tempData6  f on (case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id  when ISNULL(d.id, '')<> '' then d.id  when ISNULL(e.id, '')<> '' then e.id else a.id end) = f.id
 
+-- declare @i int = 1
+-- DECLARE @sql VARCHAR(MAX)=''
 set @i = 1
 while @i<7
 	begin
