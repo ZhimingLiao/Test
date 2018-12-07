@@ -33,7 +33,7 @@ if __name__ == '__main__':
     # Result = jb.cut_for_search(StrTest)
     # print(list(Result))
     temp = dict()
-    # TODO
+
     print(ListData)
     for item in ListData:
         # temp[item]+=1 if (item in temp) else (temp[item]=1)

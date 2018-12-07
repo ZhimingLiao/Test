@@ -2,23 +2,23 @@ if OBJECT_ID (N'tempdb.dbo.#temp_list') IS NOT NULL
 	DROP TABLE #temp_list
 if OBJECT_ID (N'tempdb.dbo.#wait_list ', N'U') IS NOT NULL
 	DROP TABLE #wait_list
-if OBJECT_ID (N'tempData1', N'U') IS NOT NULL
+if OBJECT_ID (N'tempdb.dbo.tempData1', N'U') IS NOT NULL
 	DROP TABLE tempData1
-if OBJECT_ID (N'tempData2', N'U') IS NOT NULL
+if OBJECT_ID (N'tempdb.dbo.tempData2', N'U') IS NOT NULL
 	DROP TABLE tempData2
-if OBJECT_ID (N'tempData3', N'U') IS NOT NULL
+if OBJECT_ID (N'tempdb.dbo.tempData3', N'U') IS NOT NULL
 	DROP TABLE tempData3
-if OBJECT_ID (N'tempData4', N'U') IS NOT NULL
+if OBJECT_ID (N'tempdb.dbo.tempData4', N'U') IS NOT NULL
 	DROP TABLE tempData4
-if OBJECT_ID (N'tempData5', N'U') IS NOT NULL
+if OBJECT_ID (N'tempdb.dbo.tempData5', N'U') IS NOT NULL
 	DROP TABLE tempData5
-if OBJECT_ID (N'tempData6', N'U') IS NOT NULL
+if OBJECT_ID (N'tempdb.dbo.tempData6', N'U') IS NOT NULL
 	DROP TABLE tempData6
 
-declare @doc1 varchar(10),@doc2 varchar(10),@doc3 varchar(10),@doc4 varchar(10),@doc5 varchar(10),
-		@timeout varchar(100),@Notify varchar(100)
+declare @doc1 varchar(10),@doc2 varchar(10),@doc3 varchar(10),@doc4 varchar(10),@doc5 varchar(10),@doc6 varchar(10),
+		@timeout varchar(100), @Notify varchar(100)
 
-if CONVERT(varchar(100), GETDATE(), 24) > '17:40:00' or CONVERT(varchar(100), GETDATE(), 24) between '12:10:00' and '14:10:00'
+if CONVERT(varchar(100), GETDATE(), 24) > '20:50:00' or CONVERT(varchar(100), GETDATE(), 24) between '13:10:00' and '14:10:00'
 	begin
 		select '今天已过看诊时间' Result
 		return
@@ -43,8 +43,9 @@ WHERE  convert(char(10), a.invalid_time, 120)between CONVERT(CHAR(10), GETDATE()
       and a.room_sn in (206,207,208,209,210,490)
 order by a.schedule_date desc
 
---select * from #temp_list
-
+--患者隐私处理
+update #temp_list
+set p_name=stuff(p_name,2,1,'*')
 --下一位
 --3已分诊 10已通知  11正在就诊,13 回诊
 UPDATE a SET  a.flag='next'
@@ -136,8 +137,7 @@ from #wait_list
 where [抢救室] is not null
 --order by [抢救室] desc
 
---set @timeout = (select '请'+ from )
---select * from #temp_list
+
 
 if exists(select * from #temp_list where /*DATEDIFF(MINUTE,  notify_date, GETDATE())>5
 	and */ notify_status = 2 and [status] =10)
@@ -150,11 +150,17 @@ if exists(select * from #temp_list where /*DATEDIFF(MINUTE,  notify_date, GETDAT
 			)
 	end
 
-
---select cast( ceiling(rand()*(select COUNT(*)from  #temp_list)) as int )
+--select * from #temp_list
+set @doc1= (select top 1 doctor_name from #temp_list where room_name = '1号诊室')
+set @doc2= (select top 1 doctor_name from #temp_list where room_name = '2号诊室')
+set @doc3= (select top 1 doctor_name from #temp_list where room_name = '3号诊室')
+set @doc4= (select top 1 doctor_name from #temp_list where room_name = '4号诊室')
+set @doc5= (select top 1 doctor_name from #temp_list where room_name = '5号诊室')
+set @doc6= (select top 1 doctor_name from #temp_list where room_name = '抢救室')
 
 select a.name [1号诊室], b.name [2号诊室], c.name [3号诊室], d.name [4号诊室], e.name [5号诊室], f.name [抢救室],
 CONVERT(varchar(100), GETDATE(), 23) NowDate,  CONVERT(varchar(100), GETDATE(), 24) NowTime,@timeout [TimeOut],isnull(@Notify,'') Notify,
+	@doc1 Doc1, @doc2 Doc2, @doc3 Doc3, @doc4 Doc4, @doc5 Doc5, @doc6 Doc6,
 				(case when datename(weekday, getdate())='星期一' then '周一'
 				when datename(weekday, getdate())='星期二' then '周二'
 				when datename(weekday, getdate())='星期三' then '周三'
@@ -169,6 +175,7 @@ full join tempData3  c on (case when isnull(b.id,'')='' then a.id  else b.id end
 full join tempData4  d on(case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id else a.id end) = d.id
 full join tempData5  e on (case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id  when ISNULL(d.id, '')<> '' then d.id else a.id end) = e.id
 full join tempData6  f on (case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id  when ISNULL(d.id, '')<> '' then d.id  when ISNULL(e.id, '')<> '' then e.id else a.id end) = f.id
+
 
 -- declare @i int = 1
 -- DECLARE @sql VARCHAR(MAX)=''
