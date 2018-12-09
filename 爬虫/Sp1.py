@@ -47,9 +47,9 @@ def entropy(bytes):
 
 
 def random_id():
-    hash = sha1()
-    hash.update(entropy(20))
-    return hash.digest()
+    hashid = sha1()
+    hashid.update(entropy(20))
+    return hashid.digest()
 
 
 def decode_nodes(nodes):
@@ -282,7 +282,6 @@ class KTable(object):
             self.append(node)
 
         # 返回与目标node ID或infohash的最近K个node.
-
         # 定位出与目标node ID或infohash所在的bucket, 如果该bucuck有K个节点, 返回.
         # 如果不够到K个节点的话, 把该bucket前面的bucket和该bucket后面的bucket加起来, 只返回前K个节点.
         # 还是不到K个话, 再重复这个动作. 要注意不要超出最小和最大索引范围.
@@ -319,7 +318,6 @@ class KTable(object):
         return bisect_left(self.buckets, intify(target))
 
         # 拆表
-
         # index是待拆分的bucket(old bucket)的所在索引值.
         # 假设这个old bucket的min:0, max:16. 拆分该old bucket的话, 分界点是8, 然后把old bucket的max改为8, min还是0.
         # 创建一个新的bucket, new bucket的min=8, max=16.
@@ -420,11 +418,12 @@ class Master(object):
         self.f.flush()
 
 
-try:
-    f = open("infohash.log", "a")
-    m = Master(f)
-    s = Server(Master(f), KTable(random_id()), 8001)
-    s.start()
-except KeyboardInterrupt:
-    s.socket.close()
-    f.close()
+if __name__ == '__main__':
+    try:
+        f = open("infohash.log", "a")
+        m = Master(f)
+        s = Server(Master(f), KTable(random_id()), 8001)
+        s.start()
+    except KeyboardInterrupt:
+        s.socket.close()
+        f.close()
