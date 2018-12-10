@@ -158,23 +158,43 @@ set @doc4= (select top 1 doctor_name from #temp_list where room_name = '4号诊�
 set @doc5= (select top 1 doctor_name from #temp_list where room_name = '5号诊室')
 set @doc6= (select top 1 doctor_name from #temp_list where room_name = '抢救室')
 
-select a.name [1号诊室], b.name [2号诊室], c.name [3号诊室], d.name [4号诊室], e.name [5号诊室], f.name [抢救室],
-CONVERT(varchar(100), GETDATE(), 23) NowDate,  CONVERT(varchar(100), GETDATE(), 24) NowTime,@timeout [TimeOut],isnull(@Notify,'') Notify,
-	@doc1 Doc1, @doc2 Doc2, @doc3 Doc3, @doc4 Doc4, @doc5 Doc5, @doc6 Doc6,
-				(case when datename(weekday, getdate())='星期一' then '周一'
-				when datename(weekday, getdate())='星期二' then '周二'
-				when datename(weekday, getdate())='星期三' then '周三'
-				when datename(weekday, getdate())='星期四' then '周四'
-				when datename(weekday, getdate())='星期五' then '周五'
-				when datename(weekday, getdate())='星期六' then '周六'
-				when datename(weekday, getdate())='星期日' then '周日'
-				end) NowWeek
-from tempData1 a
+-- 增加对数据是否为空判断,如果为空,其它和数据无关,如时间,仍需要输出
+if exists(select top 1 * from  tempData1 a
 full join tempData2  b on a.id = b.id
 full join tempData3  c on (case when isnull(b.id,'')='' then a.id  else b.id end)=c.id --a.id = c.id
 full join tempData4  d on(case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id else a.id end) = d.id
 full join tempData5  e on (case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id  when ISNULL(d.id, '')<> '' then d.id else a.id end) = e.id
 full join tempData6  f on (case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id  when ISNULL(d.id, '')<> '' then d.id  when ISNULL(e.id, '')<> '' then e.id else a.id end) = f.id
+)
+	select a.name [1号诊室], b.name [2号诊室], c.name [3号诊室], d.name [4号诊室], e.name [5号诊室], f.name [抢救室],
+	CONVERT(varchar(100), GETDATE(), 23) NowDate,  CONVERT(varchar(100), GETDATE(), 24) NowTime,@timeout [TimeOut],isnull(@Notify,'') Notify,
+		@doc1 Doc1, @doc2 Doc2, @doc3 Doc3, @doc4 Doc4, @doc5 Doc5, @doc6 Doc6,
+					(case when datename(weekday, getdate())='星期一' then '周一'
+					when datename(weekday, getdate())='星期二' then '周二'
+					when datename(weekday, getdate())='星期三' then '周三'
+					when datename(weekday, getdate())='星期四' then '周四'
+					when datename(weekday, getdate())='星期五' then '周五'
+					when datename(weekday, getdate())='星期六' then '周六'
+					when datename(weekday, getdate())='星期日' then '周日'
+					end) NowWeek
+	from tempData1 a
+	full join tempData2  b on a.id = b.id
+	full join tempData3  c on (case when isnull(b.id,'')='' then a.id  else b.id end)=c.id --a.id = c.id
+	full join tempData4  d on(case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id else a.id end) = d.id
+	full join tempData5  e on (case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id  when ISNULL(d.id, '')<> '' then d.id else a.id end) = e.id
+	full join tempData6  f on (case when isnull(b.id,'')<>'' then b.id  when ISNULL(c.id, '')<> '' then c.id  when ISNULL(d.id, '')<> '' then d.id  when ISNULL(e.id, '')<> '' then e.id else a.id end) = f.id
+else
+	select '' [1号诊室], '' [2号诊室], '' [3号诊室], '' [4号诊室], '' [5号诊室], '' [抢救室],
+	CONVERT(varchar(100), GETDATE(), 23) NowDate,  CONVERT(varchar(100), GETDATE(), 24) NowTime,@timeout [TimeOut],isnull(@Notify,'') Notify,
+		@doc1 Doc1, @doc2 Doc2, @doc3 Doc3, @doc4 Doc4, @doc5 Doc5, @doc6 Doc6,
+					(case when datename(weekday, getdate())='星期一' then '周一'
+					when datename(weekday, getdate())='星期二' then '周二'
+					when datename(weekday, getdate())='星期三' then '周三'
+					when datename(weekday, getdate())='星期四' then '周四'
+					when datename(weekday, getdate())='星期五' then '周五'
+					when datename(weekday, getdate())='星期六' then '周六'
+					when datename(weekday, getdate())='星期日' then '周日'
+					end) NowWeek
 
 
 -- declare @i int = 1
