@@ -3,6 +3,7 @@
 __author__ = 'ANDY LIAO'
 # 2018-12-02
 import re
+import timeit as ti
 
 
 def StrTest(Str, IsASC):
@@ -23,3 +24,11 @@ def StrTest(Str, IsASC):
 if __name__ == '__main__':
     Str = '12, 45, 6, 啊, 自己on公司, 中山, 23, 45, 6, 好的'
     print(StrTest(Str, 1))
+    # 测试调用函数使用多长时间
+    t1 = ti.timeit(stmt="StrTest(Str, IsASC)", setup="from __main__ import  StrTest; Str='12, 45, 6, 啊, 自己on公司, 中山, 23, 45, 6, 好的'; IsASC=1",
+                   number=1)
+
+    t2 = ti.repeat(stmt="StrTest(Str, IsASC)",
+                   setup="from __main__ import  StrTest; Str='12, 45, 6, 啊, 自己on公司, 中山, 23, 45, 6, 好的'; IsASC=1",
+                   repeat=3, number=1000000)
+    print(t2)

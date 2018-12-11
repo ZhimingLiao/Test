@@ -2,17 +2,17 @@ if OBJECT_ID (N'tempdb.dbo.#temp_list') IS NOT NULL
 	DROP TABLE #temp_list
 if OBJECT_ID (N'tempdb.dbo.#wait_list ', N'U') IS NOT NULL
 	DROP TABLE #wait_list
-if OBJECT_ID (N'tempdb.dbo.tempData1', N'U') IS NOT NULL
+if OBJECT_ID (N'tempData1', N'U') IS NOT NULL
 	DROP TABLE tempData1
-if OBJECT_ID (N'tempdb.dbo.tempData2', N'U') IS NOT NULL
+if OBJECT_ID (N'tempData2', N'U') IS NOT NULL
 	DROP TABLE tempData2
-if OBJECT_ID (N'tempdb.dbo.tempData3', N'U') IS NOT NULL
+if OBJECT_ID (N'tempData3', N'U') IS NOT NULL
 	DROP TABLE tempData3
-if OBJECT_ID (N'tempdb.dbo.tempData4', N'U') IS NOT NULL
+if OBJECT_ID (N'tempData4', N'U') IS NOT NULL
 	DROP TABLE tempData4
-if OBJECT_ID (N'tempdb.dbo.tempData5', N'U') IS NOT NULL
+if OBJECT_ID (N'tempData5', N'U') IS NOT NULL
 	DROP TABLE tempData5
-if OBJECT_ID (N'tempdb.dbo.tempData6', N'U') IS NOT NULL
+if OBJECT_ID (N'tempData6', N'U') IS NOT NULL
 	DROP TABLE tempData6
 
 declare @doc1 varchar(10),@doc2 varchar(10),@doc3 varchar(10),@doc4 varchar(10),@doc5 varchar(10),@doc6 varchar(10),

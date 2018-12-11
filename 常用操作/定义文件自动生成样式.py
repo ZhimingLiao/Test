@@ -30,4 +30,7 @@
 # 项目名称  :${Name}
 # 编译器   :${PRODUCT_NAME}
 __author____ = '志明'
-__time__ = '{$DATE} ${Time}'
+__time__ = '${DATE} ${TIME}'
+
+
+if __name__ == '__main__':
