@@ -146,6 +146,7 @@ if exists(select * from #temp_list where /*DATEDIFF(MINUTE,  notify_date, GETDAT
 		from #temp_list a
 		where /*DATEDIFF(MINUTE,  notify_date, GETDATE())> 5
 			and */notify_status = 2 and a.[status] =10
+			and a.flag != 'out' --增加对过号患者进行过滤  2018-12-12 广医五院 ANDY
 			order by notify_date desc
 			)
 	end

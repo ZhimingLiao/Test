@@ -12,6 +12,7 @@ import pymssql
 
 
 if __name__ == '__main__':
+    '''使用pymssql出现问题,估计是python解析器的问题'''
     print(dir(pymssql))
     conn = pymssql.connect('172.16.230.100', 'sa', 'sql', 'mz_patient')
     cursor = conn.cursor()

@@ -84,11 +84,12 @@ class MSSQLHelper:
 
 
 if __name__ == '__main__':
-    conn_info = {'host':'172.16.230.100', 'user': 'sa', 'password':'sql', 'db':'hismz'}
+    conn_info = {'host': '172.16.230.100', 'user': 'sa', 'password': 'sql', 'db': 'hismz'}
     t = MSSQLHelper(**conn_info)
     sql = '''select * from temp_error where p_id = '{p_id}' '''.format(p_id='000000033300')
     sql2 = ''' update temp_error set pay_unit = 88 where p_id = '{p_id}' order by p_id asc '''.format(p_id='000000033300')
     sql3 = ''' select p_id , name from mz_patient order by p_id asc'''
     # print(t.ExecQuery(sql))
     # print(t.ExecSQL(sql2))
-    print(t.query_page(sql3, 5, 10)[:3:])
+    # print(t.query_page(sql3, 5, 10)[:3:])
+    print(t.exec_query("select count(*) from mz_patient")[0][0])

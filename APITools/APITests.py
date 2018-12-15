@@ -21,7 +21,7 @@ class APITest(QtWidgets.QMainWindow, APITestUI.Ui_APITest):
         super(APITest, self).__init__()
         self.setupUi(self)
         self.t = ThreadTimeChange.ThreadTimeChange('APITools', self.Timer)
-        self.URL.setText('http://1192.168.8.63:37777/EaiServer')
+        self.URL.setText('http://192.168.8.63:37777/EaiServer')
         self.OutPut.setPlainText('此处为出参')
         # self.Input.setPlainText('此处为入参')
 
@@ -87,5 +87,6 @@ if __name__ == '__main__':
     APITools = APITest()
     APITools.t.start()
     APITools.show()
+
     # t.join()
     sys.exit(app.exec_())
