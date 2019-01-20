@@ -20,12 +20,9 @@
 # 月等
 # # File ----->> Setting ----->> Editor ----->> File and Code Templates ----->> Python Script
 
-
-
-
 # !/usr/bin/env python3
 # -*- coding:utf-8 -*-
-# 广医五院  志明  ${DATE} ${TIME}
+# ${DATE} ${TIME} 广医五院  ANDY
 # 当前计算机登录名称 :${USER}
 # 项目名称  :${Name}
 # 编译器   :${PRODUCT_NAME}
@@ -34,3 +31,4 @@ __time__ = '${DATE} ${TIME}'
 
 
 if __name__ == '__main__':
+    pass
